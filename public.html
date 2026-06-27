@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PWA MANIFEST INTEGRATION -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#047857">
+  <title>Transparansi Publik - Kas & Logistik Masjid Jami Wihdatul Ummah</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex flex-col min-h-screen font-sans antialiased text-slate-800">
+
+  <!-- NAVBAR ATAS DENGAN MENU LOGIN -->
+  <nav class="bg-white border-b border-slate-200/80 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+      <!-- Sisi Kiri: Identitas Masjid -->
+      <div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900">
+  Masjid Jami <span class="block sm:inline">Wihdatul Ummah</span>
+</h1>
+        <p class="text-xs font-medium text-emerald-600">Papan Transparansi Publik & Akuntabilitas Umat</p>
+      </div>
+      
+      <!-- Sisi Kanan: Menu Navigasi & Login -->
+      <div class="flex items-center gap-3">
+        <!-- Status Mode Pantau -->
+        <div class="hidden sm:flex text-xs bg-slate-50 text-slate-600 font-semibold px-3 py-1.5 rounded-full border border-slate-200/60">
+          <i class="fa-solid fa-eye mr-1.5 self-center"></i> Mode Publik
+        </div>
+        
+        <!-- Tombol Login Menuju Apps Script -->
+        <a href="https://script.google.com/macros/s/AKfycbxJtIG9aXa43qkrLu74qhhB9C0pnukoItKbKRQHwLFdGsGQc1n8jtsMRqTZu1IcM8KO/exec" 
+           class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-800 shadow-sm hover:shadow transition-all duration-200">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login Pengurus</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- KONTEN UTAMA -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+    
+    <!-- RINGKASAN SALDO UTAMA -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Total Kas Tunai (Rupiah)</p>
+        <h3 id="txtSaldoKas" class="text-2xl font-bold text-slate-900 mt-1">Rp 0</h3>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Logistik Masuk Bulan Ini</p>
+        <h3 id="txtLogistikMasuk" class="text-2xl font-bold text-emerald-600 mt-1">0 Item</h3>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Status Audit Dewan Pembina</p>
+        <h3 class="text-base font-bold text-teal-600 mt-2"><i class="fa-solid fa-circle-check mr-1"></i> Terverifikasi Sah</h3>
+      </div>
+    </div>
+
+    <!-- TABEL MUTASI KAS KELUAR -->
+   <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+  <h3 class="font-bold text-slate-900 flex items-center gap-2">
+    <i class="fa-solid fa-arrow-up-from-bracket text-rose-500"></i> Laporan Penggunaan Dana & Bantuan
+  </h3>
+  
+  <!-- TOMBOL EKSPOR -->
+  <div class="flex items-center gap-2 w-full sm:w-auto">
+    <button onclick="eksporCSV()" class="bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5">
+      <i class="fa-solid fa-file-csv text-emerald-600 text-sm"></i> CSV
+    </button>
+    <button onclick="cetakPDF()" class="bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5">
+      <i class="fa-solid fa-file-pdf text-rose-600 text-sm"></i> Cetak/PDF
+    </button>
+  </div>
+</div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 text-xs font-semibold uppercase border-b border-slate-200/60">
+              <th class="p-4 w-32">Tanggal</th>
+              <th class="p-4 w-40">Kategori</th>
+              <th class="p-4 w-44">Penerima Manfaat</th>
+              <th class="p-4">Keterangan Pengeluaran</th>
+              <th class="p-4 text-right w-36">Nominal</th>
+            </tr>
+          </thead>
+          <tbody id="tableBodyPublik" class="text-sm divide-y divide-slate-100">
+            <tr>
+              <td colspan="5" class="p-8 text-center text-slate-400">
+                <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> Memuat data transparansi umat...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER COMPONENT DENGAN KALIMAT JEMBATAN (BRIDGE) - BERSIH & TUNGGAL -->
+  <footer class="mt-auto py-8 border-t border-slate-200/60 bg-white">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      
+      <!-- Baris 1: Nama Masjid -->
+      <h4 class="text-base md:text-lg font-bold text-slate-900 tracking-tight">
+        Masjid Jami Wihdatul Ummah
+      </h4>
+      
+      <!-- Baris 2: Lokasi Institusi -->
+      <p class="text-xs md:text-sm font-medium text-slate-500">
+        Perum BMI 1 Dawuan Tengah Cikampek Karawang
+      </p>
+      
+      <!-- Baris 3: Kalimat Jembatan / Bridge -->
+      <p class="text-xs md:text-sm text-slate-600 font-medium pt-1">
+        Ingin masjid Anda memiliki aplikasi transparansi digital mandiri seperti ini? 
+        <a href="https://www.landing.kasmasjid.web.id" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:text-emerald-700 underline underline-offset-4 font-bold transition inline-flex items-center gap-1">
+          Dapatkan Informasinya di KasMasjid <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </p>
+      
+      <!-- Baris 4: Hak Cipta Ringan -->
+      <p class="text-[10px] text-slate-400 font-normal pt-2">
+        &copy; 2026 e-KasMasjid | Bagian dari KulinaSystem
+      </p>
+      
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIKA READ-ONLY & PENYAMARAN -->
+  <script>
+    async function muatDataPublik() {
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxJtIG9aXa43qkrLu74qhhB9C0pnukoItKbKRQHwLFdGsGQc1n8jtsMRqTZu1IcM8KO/exec?action=getKasKeluarPublik');
+        const res = await response.json();
+        
+        if (res.success) {
+          renderTabelPublik(res.data);
+        } else {
+          tampilkanPesanError();
+        }
+      } catch (error) {
+        const contohData = [];
+        renderTabelPublik(contohData);
+      }
+    }
+
+    function renderTabelPublik(data) {
+  // 1. Inisialisasi DOM Tabel dengan benar
+  const tbody = document.getElementById('tableBodyPublik');
+  tbody.innerHTML = '';
+
+  // 2. Hitung nominal pengeluaran secara dinamis dari data asli
+  let totalPengeluaran = 0;
+
+  data.forEach(item => {
+    const nominal = Number(item.Nominal || 0);
+    totalPengeluaran += nominal; // Akumulasi total dana keluar
+    
+    const kat = (item.Kategori || '').toLowerCase();
+    let namaTampilan = item.Penerima || item.penerima || 'Hamba Allah';
+    
+    if (kat.includes('sosial') || kat.includes('santunan') || kat.includes('bantuan')) {
+      namaTampilan = '<span class="italic text-slate-500 font-medium"><i class="fa-solid fa-heart text-rose-400 mr-1.5"></i>Hamba Allah</span>';
+    }
+
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50/80 transition-colors";
+    tr.innerHTML = `
+      <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${item.Tanggal}</td>
+      <td class="p-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-slate-100 text-slate-600">${item.Kategori}</span></td>
+      <td class="p-4 font-semibold text-slate-700">${namaTampilan}</td>
+      <td class="p-4 text-slate-600">${item.Keterangan}</td>
+      <td class="p-4 text-right font-bold text-slate-900">Rp ${nominal.toLocaleString('id-ID')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  // 3. Update komponen widget atas secara dinamis berdasarkan data asli
+  document.getElementById('txtLogistikMasuk').innerText = data.length + " Mutasi Terdata";
+  document.getElementById('txtSaldoKas').innerText = "Rp " + totalPengeluaran.toLocaleString('id-ID');
+}
+    function tampilkanPesanError() {
+      document.getElementById('tableBodyPublik').innerHTML = `
+        <tr>
+          <td colspan="5" class="p-8 text-center text-rose-500 font-medium">
+            <i class="fa-solid fa-triangle-exclamation mr-2"></i> Gagal memuat data transparansi publik. Silakan segarkan halaman.
+          </td>
+        </tr>`;
+    }
+
+    window.onload = muatDataPublik;
+// FUNGSI 1: CETAK / SIMPAN KE PDF BAAWAN BROWSER
+function cetakPDF() {
+  window.print();
+}
+
+// FUNGSI 2: GENERATE & DOWNLOAD FILE CSV SECARA INSTAN
+function eksporCSV() {
+  // Ambil semua data yang saat ini tampil (bisa diikat dari variabel data global)
+  // Di sini kita contohkan membuat baris header CSV
+  let barisCsv = ["Tanggal", "Kategori", "Penerima Manfaat", "Keterangan", "Nominal"];
+  let isiCsv = [barisCsv.join(",")];
+  
+  // Ambil elemen baris tabel untuk diekstrak teksnya
+  const barisTabel = document.querySelectorAll("#tableBodyPublik tr");
+  
+  barisTabel.forEach(tr => {
+    const kolom = tr.querySelectorAll("td");
+    if (kolom.length >= 5) {
+      let tanggal = kolom[0].innerText;
+      let kategori = kolom[1].innerText;
+      let penerima = kolom[2].innerText.replace(/,/g, " "); // Hapus koma agar format CSV tidak pecah
+      let keterangan = kolom[3].innerText.replace(/,/g, " ");
+      let nominal = kolom[4].innerText.replace(/[^\d]/g, ""); // Hanya ambil angka saja
+      
+      isiCsv.push(`${tanggal},${kategori},${penerima},${keterangan},${nominal}`);
+    }
+  });
+  
+  // Create file download trigger
+  const fileCsv = new Blob([isiCsv.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const linkEkspor = document.createElement("a");
+  const url = URL.createObjectURL(fileCsv);
+  
+  linkEkspor.setAttribute("href", url);
+  linkEkspor.setAttribute("download", "Laporan_Kas_Jami_Wihdatul_Ummah.csv");
+  linkEkspor.style.visibility = "hidden";
+  document.body.appendChild(linkEkspor);
+  linkEkspor.click();
+  document.body.removeChild(linkEkspor);
+}
+  </script>
+</body>
+</html>
